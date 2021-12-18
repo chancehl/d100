@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
 
-import prisma from '../lib/prisma'
+import prismaClient from '../prisma/client'
 
 const Home: NextPage = ({ users }: any) => {
     const router = useRouter()
@@ -51,7 +51,7 @@ const Home: NextPage = ({ users }: any) => {
 
 // index.tsx
 export const getStaticProps: GetStaticProps = async () => {
-    const users = await prisma.user.findMany()
+    const users = await prismaClient.user.findMany()
 
     return { props: { users: JSON.parse(JSON.stringify(users)) } }
 }
