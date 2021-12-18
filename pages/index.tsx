@@ -1,10 +1,12 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
 
-const Home: NextPage = () => {
+import prisma from '../lib/prisma'
+
+const Home: NextPage = ({ users }: any) => {
     const router = useRouter()
 
     const [query, setQuery] = useState<string | null>(null)
@@ -22,6 +24,10 @@ const Home: NextPage = () => {
     const onShuffleClick = () => {
         router.push(`/dwarf-names`)
     }
+
+    useEffect(() => {
+        console.log(users)
+    }, [users])
 
     return (
         <>
@@ -41,6 +47,13 @@ const Home: NextPage = () => {
             </main>
         </>
     )
+}
+
+// index.tsx
+export const getStaticProps: GetStaticProps = async () => {
+    const users = await prisma.user.findMany()
+
+    return { props: { users: JSON.parse(JSON.stringify(users)) } }
 }
 
 export default Home
