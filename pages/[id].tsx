@@ -8,9 +8,12 @@ import { HomeButton } from '../components/home-button'
 
 export const CollectionPage = ({ collection }: any) => {
     useEffect(() => {
-        ;(async function () {
-            await axios.post(`/api/collections/views?id=${collection.id}`)
-        })()
+        try {
+            // We don't need to await this. It can just happen in the background.
+            axios.post(`/api/collections/views?id=${collection.id}`)
+        } catch (error: any) {
+            console.error('Encountered an error when updating view count for collection. Views may not be accurate.')
+        }
     }, [])
 
     return (
