@@ -12,8 +12,6 @@ model User {
   id          Int          @id @default(autoincrement())
   name        String?
   email       String?      @unique
-  createdAt   DateTime     @default(now()) @map(name: "created_at")
-  updatedAt   DateTime     @updatedAt @map(name: "updated_at")
   collections Collection[]
 
   @@map(name: "users")
@@ -23,8 +21,6 @@ model Collection {
   id              String           @id @unique
   name            String?
   description     String?
-  createdAt       DateTime         @default(now()) @map(name: "created_at")
-  updatedAt       DateTime         @updatedAt @map(name: "updated_at")
   owner           User             @relation(fields: [ownerId], references: [id])
   ownerId         Int
   collectionItems CollectionItem[]
@@ -33,11 +29,9 @@ model Collection {
 }
 
 model CollectionItem {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   value       String
   description String?
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @updatedAt @map(name: "updated_at")
 
   Collection   Collection? @relation(fields: [collectionId], references: [id])
   collectionId String?

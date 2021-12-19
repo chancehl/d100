@@ -10,18 +10,30 @@ const Home: NextPage = () => {
 
     const [query, setQuery] = useState<string | null>(null)
     const [results, setResults] = useState<any[] | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string | null>(null)
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value.length ? event.target.value : null)
     }
 
     const onSearchClick = async () => {
-        if (query) {
+        if (query == null) {
+            return
+        }
+
+        try {
+            setLoading(true)
+
             const response = await axios.get(`/api/search?q=${encodeURIComponent(query)}`)
 
             const collections = response.data.collections
 
             setResults(collections.length ? collections : [])
+        } catch (error: any) {
+            setError(error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -35,6 +47,7 @@ const Home: NextPage = () => {
 
             <main>
                 <input onChange={onInputChange} />
+                {loading && <span>Searching...</span>}
                 {results == null ? null : results.length ? (
                     <ul>
                         {results.map((result: any) => (

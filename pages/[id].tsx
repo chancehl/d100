@@ -1,5 +1,8 @@
-import { HomeButton } from '../components/home-button'
+import { Collection } from '@prisma/client'
 import client from '../prisma/client'
+
+import { HomeButton } from '../components/home-button'
+import { GetStaticProps } from 'next'
 
 export const ListPage = ({ collection }: any) => {
     return (
@@ -26,7 +29,6 @@ export const getStaticProps = async ({ params }: any) => {
             id: true,
             name: true,
             description: true,
-            createdAt: true,
             collectionItems: {
                 select: {
                     id: true,
@@ -39,7 +41,7 @@ export const getStaticProps = async ({ params }: any) => {
 
     return {
         props: {
-            collection: JSON.parse(JSON.stringify(collection)) ?? null,
+            collection: collection ?? null,
         },
     }
 }
@@ -48,7 +50,7 @@ export const getStaticPaths = async () => {
     const collections = await client.collection.findMany()
 
     return {
-        paths: collections.map((collection: any) => ({ params: { id: collection.id } })),
+        paths: collections.map((collection: Collection) => ({ params: { id: collection.id } })),
         fallback: false,
     }
 }

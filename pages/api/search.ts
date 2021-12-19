@@ -1,9 +1,17 @@
+import { Collection } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import client from '../../prisma/client'
 
-export const search = async (req: NextApiRequest, res: NextApiResponse) => {
-    const query = typeof req.query.q === 'string' ? req.query.q : typeof req.query.q === 'object' && req.query.q.length ? req.query.q[0] : null
+type ResponseData = { error: string } | { collections: Collection[] }
+
+export const search = async (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
+    // prettier-ignore
+    const query = typeof req.query.q === 'string' 
+        ? req.query.q 
+        : typeof req.query.q === 'object' && req.query.q.length 
+            ? req.query.q[0] 
+            : null
 
     if (query == null) {
         res.status(400).json({ error: 'Could not locate query' })
