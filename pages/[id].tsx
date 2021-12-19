@@ -4,7 +4,14 @@ import client from '../prisma/client'
 export const ListPage = ({ collection }: any) => {
     return (
         <>
-            <h1>{collection != null ? JSON.stringify(collection) : null}</h1>
+            <ul>
+                {collection?.collectionItems?.length &&
+                    collection.collectionItems.map((item: any) => (
+                        <li key={item.id}>
+                            {item.value} {item.description ? `(${item.description})` : null}
+                        </li>
+                    ))}
+            </ul>
             <HomeButton />
         </>
     )

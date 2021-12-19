@@ -24,6 +24,11 @@ export const search = async (req: NextApiRequest, res: NextApiResponse) => {
                         contains: query,
                     },
                 },
+                {
+                    id: {
+                        contains: query,
+                    },
+                },
             ],
         },
     })
