@@ -2,9 +2,12 @@ import { Collection } from '@prisma/client'
 import client from '../prisma/client'
 
 import { HomeButton } from '../components/home-button'
-import { GetStaticProps } from 'next'
 
-export const ListPage = ({ collection }: any) => {
+type Props = {
+    collection: Collection
+}
+
+export const CollectionPage = ({ collection }: any) => {
     return (
         <>
             <ul>
@@ -55,4 +58,4 @@ export const getStaticPaths = async () => {
     }
 }
 
-export default ListPage
+export default CollectionPage
