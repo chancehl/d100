@@ -1,13 +1,18 @@
+import { useEffect } from 'react'
+import axios from 'axios'
+
 import { Collection } from '@prisma/client'
 import client from '../prisma/client'
 
 import { HomeButton } from '../components/home-button'
 
-type Props = {
-    collection: Collection
-}
-
 export const CollectionPage = ({ collection }: any) => {
+    useEffect(() => {
+        ;(async function () {
+            await axios.post(`/api/collections/views?id=${collection.id}`)
+        })()
+    }, [])
+
     return (
         <>
             <ul>
@@ -32,6 +37,7 @@ export const getStaticProps = async ({ params }: any) => {
             id: true,
             name: true,
             description: true,
+            views: true,
             collectionItems: {
                 select: {
                     id: true,

@@ -24,6 +24,7 @@ model Collection {
   owner           User             @relation(fields: [ownerId], references: [id])
   ownerId         Int
   collectionItems CollectionItem[]
+  views           Int              @default(0)
 
   @@map(name: "collections")
 }
