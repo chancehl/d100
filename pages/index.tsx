@@ -1,33 +1,29 @@
-import type { GetStaticProps, NextPage } from 'next'
-
+import axios from 'axios'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
 
-import prismaClient from '../prisma/client'
+import { ChangeEvent, useState } from 'react'
 
-const Home: NextPage = ({ users }: any) => {
+const Home: NextPage = () => {
     const router = useRouter()
 
     const [query, setQuery] = useState<string | null>(null)
+    const [results, setResults] = useState<any[] | null>(null)
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value.length ? event.target.value : null)
     }
 
-    const onSearchClick = () => {
+    const onSearchClick = async () => {
         if (query) {
-            router.push(`/search?q=${encodeURIComponent(query)}`)
+            const response = await axios.get(`/api/search?q=${encodeURIComponent(query)}`)
+
+            const collections = response.data.collections
+
+            setResults(collections.length ? collections : [])
         }
     }
-
-    const onShuffleClick = () => {
-        router.push(`/dwarf-names`)
-    }
-
-    useEffect(() => {
-        console.log(users)
-    }, [users])
 
     return (
         <>
@@ -38,22 +34,24 @@ const Home: NextPage = ({ users }: any) => {
             </Head>
 
             <main>
-                <h1 className="text-3xl font-bold underline">{query ?? 'Hello, world!'}</h1>
                 <input onChange={onInputChange} />
+                {results == null ? null : results.length ? (
+                    <ul>
+                        {results.map((result: any) => (
+                            <li key={result.id} onClick={() => router.push(`/${result.id}`)}>
+                                {result.name}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <span>No results</span>
+                )}
                 <button disabled={query == null || query.length === 0} onClick={onSearchClick}>
                     Search
                 </button>
-                <button onClick={onShuffleClick}>Shuffle</button>
             </main>
         </>
     )
-}
-
-// index.tsx
-export const getStaticProps: GetStaticProps = async () => {
-    const users = await prismaClient.user.findMany()
-
-    return { props: { users: JSON.parse(JSON.stringify(users)) } }
 }
 
 export default Home
