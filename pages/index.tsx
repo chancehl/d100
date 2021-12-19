@@ -4,8 +4,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { ChangeEvent, useState } from 'react'
+import client from '../prisma/client'
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ popularCollections }: any) => {
     const router = useRouter()
 
     const [query, setQuery] = useState<string | null>(null)
@@ -65,6 +66,24 @@ const Home: NextPage = () => {
             </main>
         </>
     )
+}
+
+export const getStaticProps = async ({ params }: any) => {
+    const popularCollections = await client.collection.findMany({
+        take: 25,
+        orderBy: { views: 'desc' },
+        select: {
+            id: true,
+            name: true,
+            views: true,
+        },
+    })
+
+    return {
+        props: {
+            popularCollections: popularCollections ?? [],
+        },
+    }
 }
 
 export default Home
