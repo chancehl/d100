@@ -2,7 +2,7 @@ import { Collection } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import client from '../../prisma/client'
-import { parseQueryParam } from '../../utils/parseQueryParam'
+import { parseQueryParam } from '../../utils/parse-query-param'
 
 type ResponseData = { error: string } | { collections: Collection[] }
 
