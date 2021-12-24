@@ -7,9 +7,12 @@ import { useRouter } from 'next/router'
 
 import client from '../prisma/client'
 import { AuthButton } from '../components/auth-button'
+import { useSession } from 'next-auth/react'
+import { ProfilePicture } from '../components/profile-picture'
 
 const Home: NextPage = ({ popularCollections }: any) => {
     const router = useRouter()
+    const { data } = useSession()
 
     const [query, setQuery] = useState<string | null>(null)
     const [results, setResults] = useState<any[] | null>(null)
@@ -48,8 +51,12 @@ const Home: NextPage = ({ popularCollections }: any) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <header>
-                <AuthButton />
+            <header className="flex items-center justify-between pt-2 pb-2 pl-4 pr-4">
+                <div>D100</div>
+                <div className="flex gap-2">
+                    {data?.user && data.user.image && <ProfilePicture src={data.user.image} name={data.user.name} />}
+                    <AuthButton />
+                </div>
             </header>
 
             <main>
