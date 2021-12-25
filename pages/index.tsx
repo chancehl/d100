@@ -4,10 +4,10 @@ import axios from 'axios'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 
 import client from '../prisma/client'
 import { AuthButton } from '../components/auth-button'
-import { useSession } from 'next-auth/react'
 import { ProfilePicture } from '../components/profile-picture'
 
 const Home: NextPage = ({ popularCollections }: any) => {
