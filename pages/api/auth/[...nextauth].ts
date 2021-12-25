@@ -5,8 +5,8 @@ export default NextAuth({
     // Configure one or more authentication providers
     providers: [
         DiscordProvider({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: process.env.GITHUB_SECRET,
+            clientId: process.env.DISCORD_CLIENT_ID,
+            clientSecret: process.env.DISCORD_CLIENT_SECRET,
         }),
         // ...add more providers here
     ],
