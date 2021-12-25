@@ -1,8 +1,6 @@
-import { useEffect } from 'react'
-
 import { useSession, signIn, signOut } from 'next-auth/react'
 
-export const AuthButton = () => {
+export const AuthButtons = () => {
     const { data } = useSession()
 
     if (data && data.user) {
