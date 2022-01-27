@@ -47,6 +47,8 @@ const Home: NextPage = ({ popularCollections }: any) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
+            <aside>I am an aside</aside>
+
             <main>
                 <input onChange={onInputChange} />
                 {loading && <span>Searching...</span>}
