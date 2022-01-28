@@ -8,7 +8,7 @@ import { SessionProvider } from 'next-auth/react'
 import { RollContext } from '../context/roll-context'
 import { generateRandomNumber } from '../utils/generate-random-number'
 
-import { Header } from '../components/header'
+import { Header } from '../components/page/header'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [roll, setRoll] = useState(1)

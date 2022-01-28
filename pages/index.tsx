@@ -47,26 +47,38 @@ const Home: NextPage = ({ popularCollections }: any) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <aside>I am an aside</aside>
-
-            <main>
-                <input onChange={onInputChange} />
-                {loading && <span>Searching...</span>}
-                {results == null ? null : results.length ? (
-                    <ul>
-                        {results.map((result: any) => (
-                            <li key={result.id} onClick={() => router.push(`/${result.id}`)}>
-                                {result.name}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <span>No results</span>
-                )}
-                <button disabled={query == null || query.length === 0} onClick={onSearchClick}>
-                    Search
-                </button>
+            <main className="container mx-auto">
+                <div className="flex flex-row flex-wrap py-4">
+                    <aside className="w-full sm:w-1/3 md:w-1/4 px-2">
+                        <div className="sticky top-0 p-4 w-full">
+                            <ul className="flex flex-col overflow-hidden">a</ul>
+                            <ul className="flex flex-col overflow-hidden">b</ul>
+                            <ul className="flex flex-col overflow-hidden">c</ul>
+                            <ul className="flex flex-col overflow-hidden">d</ul>
+                            <ul className="flex flex-col overflow-hidden">e</ul>
+                        </div>
+                    </aside>
+                    <div role="main" className="w-full sm:w-2/3 md:w-3/4 pt-1 px-2 bg-slate-600">
+                        <input onChange={onInputChange} />
+                        {loading && <span>Searching...</span>}
+                        {results == null ? null : results.length ? (
+                            <ul>
+                                {results.map((result: any) => (
+                                    <li key={result.id} onClick={() => router.push(`/${result.id}`)}>
+                                        {result.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <span>No results</span>
+                        )}
+                        <button disabled={query == null || query.length === 0} onClick={onSearchClick}>
+                            Search
+                        </button>
+                    </div>
+                </div>
             </main>
+            <footer className="flex justify-center items-center">Chancehl</footer>
         </>
     )
 }
