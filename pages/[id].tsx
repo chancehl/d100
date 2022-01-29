@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Collection } from '@prisma/client'
 import client from '../prisma/client'
 
-import { HomeButton } from '../components/generic/home-button'
+import { HomeButton } from '../components/home-button'
 
 export const CollectionPage = ({ collection }: any) => {
     useEffect(() => {

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { RollPanel } from '.'
-import { generateRandomNumber } from '../../../utils/generate-random-number'
+import { generateRandomNumber } from '../../utils/generate-random-number'
 
 export default {
     title: 'Roll Panel',
