@@ -10,25 +10,6 @@ export const Header = () => {
             <Link href="/">
                 <a>D100</a>
             </Link>
-            <nav>
-                <ul className="flex flex-row gap-[128px]">
-                    <li>
-                        <Link href="/popular">
-                            <a>Most popular</a>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/saved">
-                            <a>Saved</a>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/blog/hello-world">
-                            <a>Blog Post</a>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
             <div className="flex gap-2">
                 <div className="flex flex-row items-center">
                     {data?.user?.name && <span className="mr-2 uppercase">{data.user.name}</span>}

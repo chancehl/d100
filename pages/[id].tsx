@@ -18,6 +18,7 @@ export const CollectionPage = ({ collection }: any) => {
 
     return (
         <>
+            <h1 className="text-5xl font-bold">{collection.name}</h1>
             <ul>
                 {collection?.collectionItems?.length &&
                     collection.collectionItems.map((item: any) => (
