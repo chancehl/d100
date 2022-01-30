@@ -17,7 +17,11 @@ export const Header = () => {
                     {data?.user?.name && <span className="mr-2 uppercase">{data.user.name}</span>}
                     {data?.user?.image && <img className="w-10 h-10 rounded-full" alt="profile-picture" src={data.user.image} />}
                 </div>
-                {data?.user == null ? <Button onClick={() => signIn()}>Sign in</Button> : <Button onClick={() => signOut()}>Sign out</Button>}
+                {data?.user == null ? (
+                    <Button onClick={() => signIn()} text="Sign in" buttonType="primary" />
+                ) : (
+                    <Button onClick={() => signOut()} text="Sign out" buttonType="secondary" />
+                )}
             </div>
         </header>
     )

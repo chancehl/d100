@@ -21,13 +21,13 @@ export const Button = (props: ButtonProps) => {
 }
 
 export const PrimaryButton = (props: ButtonProps) => (
-    <button {...props} className="text-center text-white font-semibold rounded-full pt-3 pb-3 pl-6 pr-6 bg-slate-900 hover:bg-slate-700">
+    <button {...props} className="text-center text-white font-semibold rounded-full pt-2 pb-2 pl-6 pr-6 bg-slate-900 hover:bg-slate-700">
         {props.text}
     </button>
 )
 
 export const SecondaryButton = (props: ButtonProps) => (
-    <button {...props} className="text-center font-semibold rounded-full pt-3 pb-3 pl-6 pr-6 border-slate-900 border-solid border-2 hover:bg-slate-900 hover:text-white">
+    <button {...props} className="text-center font-semibold rounded-full pt-2 pb-2 pl-6 pr-6 border-slate-900 border-solid border-2 hover:bg-slate-900 hover:text-white">
         {props.text}
     </button>
 )
