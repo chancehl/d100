@@ -48,7 +48,6 @@ const Home: NextPage = ({ popularCollections }: any) => {
             </Head>
 
             <main className="flex justify-center items-center h-screen">
-                <input className="text-center" onChange={onInputChange} placeholder="Male dwarf names" />
                 {loading && <span>Searching...</span>}
                 {results == null ? null : results.length ? (
                     <ul>
@@ -61,9 +60,6 @@ const Home: NextPage = ({ popularCollections }: any) => {
                 ) : (
                     <span>No results</span>
                 )}
-                <button disabled={query == null || query.length === 0} onClick={onSearchClick}>
-                    Search
-                </button>
             </main>
         </>
     )

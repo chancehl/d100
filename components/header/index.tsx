@@ -2,6 +2,8 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
+import { Button } from '../button/button'
+
 export const Header = () => {
     const { data } = useSession()
 
@@ -15,7 +17,7 @@ export const Header = () => {
                     {data?.user?.name && <span className="mr-2 uppercase">{data.user.name}</span>}
                     {data?.user?.image && <img className="w-10 h-10 rounded-full" alt="profile-picture" src={data.user.image} />}
                 </div>
-                {data?.user == null ? <button onClick={() => signIn()}>Sign in</button> : <button onClick={() => signOut()}>Sign out</button>}
+                {data?.user == null ? <Button onClick={() => signIn()}>Sign in</Button> : <Button onClick={() => signOut()}>Sign out</Button>}
             </div>
         </header>
     )
