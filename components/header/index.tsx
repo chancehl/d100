@@ -14,8 +14,7 @@ export const Header = () => {
             </Link>
             <div className="flex gap-2">
                 <div className="flex flex-row items-center">
-                    {data?.user?.name && <span className="mr-2 uppercase">{data.user.name}</span>}
-                    {data?.user?.image && <img className="w-10 h-10 rounded-full" alt="profile-picture" src={data.user.image} />}
+                    {data?.user?.image && <img className="w-10 h-10 rounded-full border-2" alt="profile-picture" src={data.user.image} />}
                 </div>
                 {data?.user == null ? (
                     <Button onClick={() => signIn()} text="Sign in" buttonType="primary" />
