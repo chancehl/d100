@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { CreateListForm } from './create-list'
+import { CreateListForm, CreateListFormData } from './create-list'
 
 export default {
     title: 'CreateListForm',
@@ -10,7 +10,9 @@ export default {
 } as ComponentMeta<typeof CreateListForm>
 
 export const Primary: ComponentStory<typeof CreateListForm> = () => {
-    const [formData, setFormData] = useState(1)
+    const [formData, setFormData] = useState<CreateListFormData | null>(null)
 
-    return <CreateListForm />
+    console.log({ formData })
+
+    return <CreateListForm onSubmit={(data: CreateListFormData) => setFormData(data)} {...formData} />
 }

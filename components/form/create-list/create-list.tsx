@@ -1,34 +1,46 @@
-import { ChangeEvent, ChangeEventHandler, useState } from 'react'
-import { useDebounce } from '../../../hooks/use-debounce'
+import { useState } from 'react'
 import { Button } from '../../button/button'
 
-type CreateListFormProps = {
-    title: string | null
-    description: string | null
+export type CreateListFormData = {
+    title: string
+    description: string
     items: string[]
 }
 
+export type CreateListFormProps = {
+    title?: string | null
+    description?: string | null
+    items?: string[]
+    onSubmit: (data: CreateListFormData) => void
+}
+
 export const MAX_ITEMS = 100
+export const MAX_TITLE_LENGTH = 50
 export const MAX_DESCRIPTION_LENGTH = 250
 
-export const CreateListForm = ({ title, description, items = [] }: CreateListFormProps) => {
-    const [item, setItem] = useState('')
+export const CreateListForm = (props: CreateListFormProps) => {
+    const [item, setItem] = useState<string | null>(null)
     const [mode, setMode] = useState<'freeform' | 'csv'>('freeform')
-    const [formData, setFormData] = useState({ title, description, items })
+    const [title, setTitle] = useState(props.title)
+    const [description, setDescription] = useState(props.description)
+    const [items, setItems] = useState(props.items ?? [])
 
     // prettier-ignore
-    const canSubmit = formData.title != null 
-        && formData.description != null 
-        && formData.items.length > 0
+    const canSubmit = title != null 
+        && description != null 
+        && items.length > 0
 
     const resetForm = () => {
-        setFormData({ title: null, description: null, items: [] })
+        setTitle(null)
+        setDescription(null)
+        setItems([])
+        setItem(null)
     }
 
     const onSubmit = () => {
-        console.log({ formData })
-
-        resetForm()
+        if (title && description && items.length) {
+            props.onSubmit({ title, description, items })
+        }
     }
 
     return (
@@ -43,10 +55,9 @@ export const CreateListForm = ({ title, description, items = [] }: CreateListFor
                     type="text"
                     className="border-2 border-slate-900 p-2 font-bold"
                     placeholder="Magical items"
-                    onChange={(event) => {
-                        setFormData((current) => ({ ...current, title: event.target.value }))
-                    }}
-                    value={formData.title ?? undefined}
+                    onChange={(event) => setTitle(event.target.value)}
+                    value={title ?? undefined}
+                    maxLength={MAX_TITLE_LENGTH}
                 />
             </div>
             <div className="flex flex-col">
@@ -58,10 +69,8 @@ export const CreateListForm = ({ title, description, items = [] }: CreateListFor
                     className="border-2 border-slate-900 p-2 font-bold"
                     placeholder="100 magical items you would find in a graveyard or crypt"
                     maxLength={MAX_DESCRIPTION_LENGTH}
-                    onChange={(event) => {
-                        setFormData((current) => ({ ...current, description: event.target.value }))
-                    }}
-                    value={formData.description ?? undefined}
+                    onChange={(event) => setDescription(event.target.value)}
+                    value={description ?? undefined}
                 />
             </div>
             <div className="flex flex-col">
@@ -83,15 +92,12 @@ export const CreateListForm = ({ title, description, items = [] }: CreateListFor
             </div>
             <div className="flex flex-col">
                 <span className="font-extrabold text-xs uppercase">Items</span>
-                {formData.items == null || formData.items.length === 0 ? (
+                {items.length === 0 ? (
                     <span className="font-bold">No list items</span>
                 ) : (
                     <ul>
-                        {formData.items.map((item) => (
-                            <li
-                                className="hover:text-slate-600 cursor-pointer"
-                                onClick={() => setFormData((current) => ({ ...current, items: current.items.filter((val) => val != item) }))}
-                            >
+                        {items.map((item) => (
+                            <li className="hover:text-slate-600 cursor-pointer" onClick={() => setItems((items) => ({ ...items.filter((val) => val != item) }))}>
                                 {item}
                             </li>
                         ))}
@@ -103,26 +109,27 @@ export const CreateListForm = ({ title, description, items = [] }: CreateListFor
                         className="border-2 border-slate-900 p-2 font-bold mr-4"
                         onChange={(event) => setItem(event.target.value)}
                         onKeyPress={(event) => {
-                            if (event.code === 'Enter') {
-                                setFormData((current) => ({ ...current, items: [...formData.items, item] }))
+                            if (event.code === 'Enter' && item != null) {
+                                setItems([...items, item])
 
-                                setItem('')
+                                setItem(null)
                             }
                         }}
-                        value={item}
+                        value={item ?? ''}
                     />
-                    {formData.items.length < MAX_ITEMS && (
+                    {items.length < MAX_ITEMS && (
                         <Button
                             onClick={() => {
-                                setFormData((current) => ({ ...current, items: [...formData.items, item] }))
-
-                                setItem('')
+                                if (item != null) {
+                                    setItems((items) => [...items, item])
+                                    setItem(null)
+                                }
                             }}
                             text="Add item"
                             buttonType="secondary"
                             className="flex flex-grow"
                             type="button"
-                            disabled={item == null || item.length < 1 || formData.items.includes(item)}
+                            disabled={item == null || item.length < 1 || items.includes(item)}
                         />
                     )}
                 </div>
