@@ -47,19 +47,11 @@ const Home: NextPage = ({ popularCollections }: any) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="flex justify-center items-center h-screen">
-                {loading && <span>Searching...</span>}
-                {results == null ? null : results.length ? (
-                    <ul>
-                        {results.map((result: any) => (
-                            <li key={result.id} onClick={() => router.push(`/${result.id}`)}>
-                                {result.name}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <span>No results</span>
-                )}
+            <main className="flex justify-center items-start h-screen">
+                <div className="p-32 flex flex-grow flex-col h-screen justify-center items-center">
+                    <span className="uppercase text-xs text-slate-900 font-black">Introducing</span>
+                    <h2 className="text-9xl font-black text-slate-900">D100</h2>
+                </div>
             </main>
         </>
     )
