@@ -1,24 +1,24 @@
 import { useState } from 'react'
-import { Button } from '../../button/button'
+import { Button } from '../button/button'
 
-export type CreateListFormData = {
+export type CreateCollectionFormData = {
     title: string
     description: string
     items: string[]
 }
 
-export type CreateListFormProps = {
+export type CreateCollectionFormProps = {
     title?: string | null
     description?: string | null
     items?: string[]
-    onSubmit: (data: CreateListFormData) => void
+    onSubmit: (data: CreateCollectionFormData) => void
 }
 
 export const MAX_ITEMS = 100
 export const MAX_TITLE_LENGTH = 50
 export const MAX_DESCRIPTION_LENGTH = 250
 
-export const CreateListForm = (props: CreateListFormProps) => {
+export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
     const [item, setItem] = useState<string | null>(null)
     const [mode, setMode] = useState<'freeform' | 'csv'>('freeform')
     const [title, setTitle] = useState(props.title)
