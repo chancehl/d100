@@ -9,10 +9,11 @@ generator client {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
+  id        Int          @id @default(autoincrement())
   name      String?
-  email     String? @unique
+  email     String?      @unique
   lastLogin String?
+  saved     Collection[]
 
   @@map(name: "users")
 }
@@ -24,6 +25,7 @@ model Collection {
   owner           String
   collectionItems CollectionItem[]
   views           Int              @default(0)
+  savedBy         User[]
 
   @@map(name: "collections")
 }
