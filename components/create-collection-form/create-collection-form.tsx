@@ -8,9 +8,7 @@ export type CreateCollectionFormData = {
 }
 
 export type CreateCollectionFormProps = {
-    title?: string | null
-    description?: string | null
-    items?: string[]
+    loading?: boolean
     onSubmit: (data: CreateCollectionFormData) => void
 }
 
@@ -21,21 +19,14 @@ export const MAX_DESCRIPTION_LENGTH = 250
 export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
     const [item, setItem] = useState<string | null>(null)
     const [mode, setMode] = useState<'freeform' | 'csv'>('freeform')
-    const [title, setTitle] = useState(props.title)
-    const [description, setDescription] = useState(props.description)
-    const [items, setItems] = useState(props.items ?? [])
+    const [title, setTitle] = useState<string | null>(null)
+    const [description, setDescription] = useState<string | null>(null)
+    const [items, setItems] = useState<string[]>([])
 
     // prettier-ignore
     const canSubmit = title != null 
         && description != null 
         && items.length > 0
-
-    const resetForm = () => {
-        setTitle(null)
-        setDescription(null)
-        setItems([])
-        setItem(null)
-    }
 
     const onSubmit = () => {
         if (title && description && items.length) {
@@ -44,7 +35,7 @@ export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
     }
 
     return (
-        <form className="flex flex-col space-y-8 border-2 border-slate-900 p-16 ">
+        <div className="flex flex-col space-y-8 border-2 border-slate-900 p-16 ">
             <h1 className="font-black text-6xl">Create a list</h1>
             <div className="flex flex-col">
                 <label htmlFor="title" className="font-extrabold text-xs uppercase">
@@ -74,8 +65,8 @@ export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
                 />
             </div>
             <div className="flex flex-col">
-                <fieldset className="flex">
-                    <legend className="font-extrabold text-xs uppercase">Mode</legend>
+                <div className="flex flex-col">
+                    <span className="font-extrabold text-xs uppercase">Mode</span>
                     <p className="mr-4">
                         <input type="radio" name="size" id="mode" value="freeform" checked={mode === 'freeform'} onChange={() => setMode('freeform')} />
                         <label htmlFor="freeform" className="ml-2">
@@ -88,7 +79,7 @@ export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
                             CSV
                         </label>
                     </p>
-                </fieldset>
+                </div>
             </div>
             <div className="flex flex-col">
                 <span className="font-extrabold text-xs uppercase">Items</span>
@@ -96,8 +87,8 @@ export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
                     <span className="font-bold">No list items</span>
                 ) : (
                     <ul>
-                        {items.map((item) => (
-                            <li className="hover:text-slate-600 cursor-pointer" onClick={() => setItems((items) => ({ ...items.filter((val) => val != item) }))}>
+                        {items.map((item, index) => (
+                            <li key={index} className="hover:text-slate-600 cursor-pointer" onClick={() => setItems((items) => [...items.filter((val) => val != item)])}>
                                 {item}
                             </li>
                         ))}
@@ -134,7 +125,7 @@ export const CreateCollectionForm = (props: CreateCollectionFormProps) => {
                     )}
                 </div>
             </div>
-            <Button buttonType="primary" type="button" text="Submit" onClick={onSubmit} disabled={!canSubmit} />
-        </form>
+            <Button buttonType="primary" type="button" text="Submit" onClick={onSubmit} disabled={!canSubmit} loading={props.loading} />
+        </div>
     )
 }

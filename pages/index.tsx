@@ -1,14 +1,16 @@
 import { ChangeEvent, useState } from 'react'
-import axios from 'axios'
-
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import axios from 'axios'
 
 import client from '../prisma/client'
+import { Button } from '../components/button/button'
 
 const Home: NextPage = ({ popularCollections }: any) => {
     const router = useRouter()
+    const session = useSession()
 
     const [query, setQuery] = useState<string | null>(null)
     const [results, setResults] = useState<any[] | null>(null)
@@ -51,6 +53,14 @@ const Home: NextPage = ({ popularCollections }: any) => {
                 <div className="p-32 flex flex-grow flex-col h-screen justify-center items-center">
                     <span className="uppercase text-xs text-slate-900 font-black">Introducing</span>
                     <h2 className="text-9xl font-black text-slate-900">D100</h2>
+                    <div className="flex space-x-4 mt-16">
+                        <Button
+                            buttonType="primary"
+                            text={session.data?.user == null ? 'Sign in' : 'Sign out'}
+                            onClick={() => (session.data?.user == null ? signIn() : signOut())}
+                        />
+                        <Button buttonType="secondary" text="Create collection" onClick={() => router.push('/create')} />
+                    </div>
                 </div>
             </main>
         </>

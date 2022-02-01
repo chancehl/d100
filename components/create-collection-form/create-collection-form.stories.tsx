@@ -12,7 +12,5 @@ export default {
 export const Primary: ComponentStory<typeof CreateCollectionForm> = () => {
     const [formData, setFormData] = useState<CreateCollectionFormData | null>(null)
 
-    console.log({ formData })
-
     return <CreateCollectionForm onSubmit={(data: CreateCollectionFormData) => setFormData(data)} {...formData} />
 }
