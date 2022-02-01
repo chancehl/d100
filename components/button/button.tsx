@@ -36,8 +36,11 @@ export const SecondaryButton = (props: ButtonProps) => {
     const { buttonType: _buttonType, loading, text, ...rest } = props
 
     return (
-        <button {...rest} className="text-center font-semibold rounded-full pt-2 pb-2 pl-6 pr-6 border-slate-900 border-solid border-2 hover:bg-slate-900 hover:text-white">
-            {loading ? <AiOutlineLoading3Quarters className="animate-spin text-3xl" /> : text}
+        <button
+            {...rest}
+            className="flex items-center justify-center text-center font-semibold rounded-full pt-2 pb-2 pl-6 pr-6 border-slate-900 border-solid border-2 hover:bg-slate-900 hover:text-white"
+        >
+            {loading ? <AiOutlineLoading3Quarters className="animate-spin text-2xl" /> : text}
         </button>
     )
 }
