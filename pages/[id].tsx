@@ -48,7 +48,7 @@ export const CollectionPage = ({ collection, saved: savedFromServer }: Collectio
         ) : saved ? (
             <AiFillHeart className="text-4xl cursor-pointer" onClick={toggleSave} />
         ) : (
-            <AiOutlineHeart className="cursor-pointer text-4xl" onClick={toggleSave} />
+            <AiOutlineHeart className="text-4xl cursor-pointer" onClick={toggleSave} />
         )
 
     return (
