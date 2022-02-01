@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import axios from 'axios'
-
 import { Collection } from '@prisma/client'
-import client from '../prisma/client'
 
-import { HomeButton } from '../components/home-button'
+import client from '../prisma/client'
+import { Button } from '../components/button/button'
 
 export const CollectionPage = ({ collection }: any) => {
     useEffect(() => {
@@ -17,18 +16,22 @@ export const CollectionPage = ({ collection }: any) => {
     }, [])
 
     return (
-        <>
-            <h1 className="text-5xl font-bold">{collection.name}</h1>
-            <ul>
-                {collection?.collectionItems?.length &&
-                    collection.collectionItems.map((item: any) => (
-                        <li key={item.id}>
-                            {item.value} {item.description ? `(${item.description})` : null}
-                        </li>
-                    ))}
-            </ul>
-            <HomeButton />
-        </>
+        <div className="flex flex-col h-full">
+            <div>
+                <h1 className="text-6xl font-black uppercase">{collection.name}</h1>
+                <ul>
+                    {collection?.collectionItems?.length &&
+                        collection.collectionItems.map((item: any) => (
+                            <li key={item.id}>
+                                {item.value} {item.description ? `(${item.description})` : null}
+                            </li>
+                        ))}
+                </ul>
+            </div>
+            <div>
+                <Button text="Home" buttonType="secondary" />
+            </div>
+        </div>
     )
 }
 
