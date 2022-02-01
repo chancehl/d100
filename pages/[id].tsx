@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Collection } from '@prisma/client'
 import { AiOutlineHeart, AiFillHeart, AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 import prisma from '../prisma/client'
 import { Button } from '../components/button/button'
-import { getSession, useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 import { GetServerSideProps } from 'next/types'
 
 export const CollectionPage = ({ collection, user }: any) => {
@@ -49,7 +48,7 @@ export const CollectionPage = ({ collection, user }: any) => {
     return (
         <div className="flex flex-col items-center h-full p-32">
             <h1 className="text-6xl font-black uppercase">{collection.name}</h1>
-            <div>{renderSaveIcon()}</div>
+            <div className="flex flex-row justify-between">{renderSaveIcon()}</div>
             <ul>
                 {collection?.collectionItems?.length &&
                     collection.collectionItems.map((item: any) => (
