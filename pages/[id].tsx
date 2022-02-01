@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { AiOutlineHeart, AiFillHeart, AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { Collection, CollectionItem } from '@prisma/client'
 
 import prisma from '../prisma/client'
 import { Button } from '../components/button/button'
 import { getSession } from 'next-auth/react'
 import { GetServerSideProps } from 'next/types'
 
-export const CollectionPage = ({ collection, user }: any) => {
-    const [saved, setSaved] = useState<boolean>(user?.saved?.find((savedCollection: any) => savedCollection.id === collection.id) ?? false)
+type CollectionPageProps = {
+    collection: Collection & { collectionItems: CollectionItem[] }
+    saved: boolean
+}
+
+export const CollectionPage = ({ collection, saved: savedFromServer }: CollectionPageProps) => {
+    const [saved, setSaved] = useState<boolean>(savedFromServer ?? false)
     const [saving, setSaving] = useState(false)
 
     useEffect(() => {
@@ -30,7 +36,7 @@ export const CollectionPage = ({ collection, user }: any) => {
         } catch (error: any) {
             console.error('Encountered an error when unsaving this collection', error.message)
 
-            setSaved(user?.saved?.find((savedCollection: any) => savedCollection.id === collection.id))
+            setSaved(savedFromServer)
         } finally {
             setSaving(false)
         }
@@ -51,7 +57,7 @@ export const CollectionPage = ({ collection, user }: any) => {
             <div className="flex flex-row justify-between">{renderSaveIcon()}</div>
             <ul>
                 {collection?.collectionItems?.length &&
-                    collection.collectionItems.map((item: any) => (
+                    collection.collectionItems.map((item) => (
                         <li key={item.id}>
                             {item.value} {item.description ? `(${item.description})` : null}
                         </li>
@@ -113,7 +119,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             collection,
-            user,
+            saved: user?.saved?.find((savedCollection) => savedCollection.id === collection.id) != null,
         },
     }
 }
