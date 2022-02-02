@@ -46,7 +46,7 @@ export const Create = () => {
 
     return (
         <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col space-y-8 border-2 border-slate-900 p-16 ">
+            <div className="flex flex-col space-y-8 sm:border-2 sm:border-slate-900 p-8 sm:p-16 ">
                 <h1 className="font-black text-6xl">Create a list</h1>
                 <div className="flex flex-col">
                     <label htmlFor="title" className="font-extrabold text-xs uppercase">
@@ -105,35 +105,39 @@ export const Create = () => {
                             ))}
                         </ul>
                     )}
-                    <div className="flex mt-4">
-                        <input
-                            placeholder="An ugly wand"
-                            className="border-2 border-slate-900 p-2 font-bold mr-4"
-                            onChange={(event) => setItem(event.target.value)}
-                            onKeyPress={(event) => {
-                                if (event.code === 'Enter' && item != null) {
-                                    setItems([...items, item])
+                    <div className="flex flex-col sm:flex-row mt-4 sm:justify-between">
+                        <div>
+                            <input
+                                placeholder="An ugly wand"
+                                className="border-2 border-slate-900 p-2 font-bold mr-4 mb-4 sm:mb-0"
+                                onChange={(event) => setItem(event.target.value)}
+                                onKeyPress={(event) => {
+                                    if (event.code === 'Enter' && item != null) {
+                                        setItems([...items, item])
 
-                                    setItem(null)
-                                }
-                            }}
-                            value={item ?? ''}
-                        />
-                        {items.length < MAX_ITEMS && (
-                            <Button
-                                onClick={() => {
-                                    if (item != null) {
-                                        setItems((items) => [...items, item])
                                         setItem(null)
                                     }
                                 }}
-                                text="Add item"
-                                buttonType="secondary"
-                                className="flex flex-grow"
-                                type="button"
-                                disabled={item == null || item.length < 1 || items.includes(item)}
+                                value={item ?? ''}
                             />
-                        )}
+                        </div>
+                        <div>
+                            {items.length < MAX_ITEMS && (
+                                <Button
+                                    onClick={() => {
+                                        if (item != null) {
+                                            setItems((items) => [...items, item])
+                                            setItem(null)
+                                        }
+                                    }}
+                                    text="Add item"
+                                    buttonType="secondary"
+                                    className="flex flex-grow"
+                                    type="button"
+                                    disabled={item == null || item.length < 1 || items.includes(item)}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
                 <Button buttonType="primary" type="button" text="Submit" onClick={onSubmit} disabled={!canSubmit} loading={loading} />
