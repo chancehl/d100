@@ -1,29 +1,49 @@
-import { useState } from 'react'
+import { useState, KeyboardEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import Router from 'next/router'
 import axios from 'axios'
 
 import { Button } from '../components/button/button'
+import { CollectionItem } from '@prisma/client'
 
 export const MAX_ITEMS = 100
 export const MAX_TITLE_LENGTH = 50
 export const MAX_DESCRIPTION_LENGTH = 250
+
+type FormItem = Pick<CollectionItem, 'value' | 'description'>
 
 export const Create = () => {
     const session = useSession()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    const [item, setItem] = useState<string | null>(null)
+    const [itemName, setItemName] = useState<string | null>(null)
+    const [itemDescription, setItemDescription] = useState<string | null>(null)
     const [mode, setMode] = useState<'freeform' | 'csv'>('freeform')
     const [title, setTitle] = useState<string | null>(null)
     const [description, setDescription] = useState<string | null>(null)
-    const [items, setItems] = useState<string[]>([])
+    const [items, setItems] = useState<FormItem[]>([])
 
     // prettier-ignore
     const canSubmit = title != null 
         && description != null 
         && items.length > 0
+
+    const addItem = () => {
+        if (itemName != null) {
+            setItems((items) => [...items, { value: itemName, description: itemDescription }])
+
+            setItemName(null)
+
+            setItemDescription(null)
+        }
+    }
+
+    const onKeyPress = (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (event.code === 'Enter' && itemName != null) {
+            addItem()
+        }
+    }
 
     const onSubmit = async () => {
         try {
@@ -99,45 +119,42 @@ export const Create = () => {
                     ) : (
                         <ul>
                             {items.map((item, index) => (
-                                <li key={index} className="hover:text-slate-600 cursor-pointer" onClick={() => setItems((items) => [...items.filter((val) => val != item)])}>
-                                    {item}
+                                <li
+                                    key={index}
+                                    className="hover:text-slate-600 cursor-pointer flex flex-col"
+                                    onClick={() => setItems((items) => [...items.filter((val) => val.value != item.value)])}
+                                >
+                                    <span className="text-xl">{item.value}</span>
+                                    <span className="italic text-sm">{item.description}</span>
                                 </li>
                             ))}
                         </ul>
                     )}
-                    <div className="flex flex-col sm:flex-row mt-4 sm:justify-between">
-                        <div>
-                            <input
-                                placeholder="An ugly wand"
-                                className="border-2 border-slate-900 p-2 font-bold mr-4 mb-4 sm:mb-0"
-                                onChange={(event) => setItem(event.target.value)}
-                                onKeyPress={(event) => {
-                                    if (event.code === 'Enter' && item != null) {
-                                        setItems([...items, item])
-
-                                        setItem(null)
-                                    }
-                                }}
-                                value={item ?? ''}
+                    <div className="flex flex-col space-y-4 mt-4 sm:justify-between">
+                        <input
+                            placeholder="An ugly robe"
+                            className="border-2 border-slate-900 p-2 font-bold mb-4 sm:mb-0"
+                            onChange={(event) => setItemName(event.target.value)}
+                            onKeyPress={onKeyPress}
+                            value={itemName ?? ''}
+                        />
+                        <textarea
+                            className="border-2 border-slate-900 p-2 font-bold mb-4 sm:mb-0"
+                            placeholder={`An old, dusty robe that has the letters 'HT' embroidered on the back in fine, gold thread.`}
+                            onChange={(event) => setItemDescription(event.target.value)}
+                            onKeyPress={onKeyPress}
+                            value={itemDescription ?? ''}
+                        />
+                        {items.length < MAX_ITEMS && (
+                            <Button
+                                onClick={addItem}
+                                text="Add item"
+                                buttonType="secondary"
+                                className="flex flex-grow"
+                                type="button"
+                                disabled={itemName == null || itemName.length < 1 || items.some((item) => item.value === itemName)}
                             />
-                        </div>
-                        <div>
-                            {items.length < MAX_ITEMS && (
-                                <Button
-                                    onClick={() => {
-                                        if (item != null) {
-                                            setItems((items) => [...items, item])
-                                            setItem(null)
-                                        }
-                                    }}
-                                    text="Add item"
-                                    buttonType="secondary"
-                                    className="flex flex-grow"
-                                    type="button"
-                                    disabled={item == null || item.length < 1 || items.includes(item)}
-                                />
-                            )}
-                        </div>
+                        )}
                     </div>
                 </div>
                 <Button buttonType="primary" type="button" text="Submit" onClick={onSubmit} disabled={!canSubmit} loading={loading} />

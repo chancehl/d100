@@ -121,13 +121,12 @@ export const CollectionPage = ({ collection, saved: savedFromServer, liked: like
                 </div>
             </div>
             <ul className="pt-16">
-                {collection?.items?.length &&
-                    collection.items.map((item) => (
-                        <li key={item.id}>
-                            <span className="text-4xl font-bold">{item.value}</span>
-                            <p>{item.description ? `(${item.description})` : null}</p>
-                        </li>
-                    ))}
+                {collection?.items?.map((item) => (
+                    <li key={item.id} className="flex flex-col mt-8 mb-8">
+                        <span className="text-4xl font-bold">{item.value}</span>
+                        <span className="italic">{item.description ? `${item.description}` : null}</span>
+                    </li>
+                ))}
             </ul>
             <div className="mt-16">
                 <Button text="Home" buttonType="secondary" onClick={() => Router.push('/')} />

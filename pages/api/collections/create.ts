@@ -24,7 +24,7 @@ export const createCollection = async (req: NextApiRequest, res: NextApiResponse
                 id: generateId(req.body.title),
                 items: {
                     createMany: {
-                        data: req.body.items.map((item: any) => ({ value: item, description: null })),
+                        data: req.body.items,
                     },
                 },
                 description: req.body.description,
