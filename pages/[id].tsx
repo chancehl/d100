@@ -9,7 +9,7 @@ import { getSession } from 'next-auth/react'
 import { GetServerSideProps } from 'next/types'
 
 type CollectionPageProps = {
-    collection: Collection & { collectionItems: CollectionItem[] }
+    collection: Collection & { items: CollectionItem[] }
     saved: boolean
 }
 
@@ -56,8 +56,8 @@ export const CollectionPage = ({ collection, saved: savedFromServer }: Collectio
             <h1 className="text-6xl font-black uppercase">{collection.name}</h1>
             <div className="flex flex-row justify-between">{renderSaveIcon()}</div>
             <ul>
-                {collection?.collectionItems?.length &&
-                    collection.collectionItems.map((item) => (
+                {collection?.items?.length &&
+                    collection.items.map((item) => (
                         <li key={item.id}>
                             {item.value} {item.description ? `(${item.description})` : null}
                         </li>
@@ -97,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             name: true,
             description: true,
             views: true,
-            collectionItems: {
+            items: {
                 select: {
                     id: true,
                     value: true,

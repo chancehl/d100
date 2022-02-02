@@ -19,13 +19,11 @@ model User {
 }
 
 model Collection {
-  id              String           @id @unique
-  name            String?
-  description     String?
-  owner           String
-  collectionItems CollectionItem[]
-  views           Int              @default(0)
-  savedBy         User[]
+  id          String           @id @unique
+  name        String?
+  description String?
+  owner       String
+  items       CollectionItem[]
 
   @@map(name: "collections")
 }

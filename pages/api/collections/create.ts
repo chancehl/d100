@@ -22,7 +22,7 @@ export const createCollection = async (req: NextApiRequest, res: NextApiResponse
         const collection = await prisma.collection.create({
             data: {
                 id: generateId(req.body.title),
-                collectionItems: {
+                items: {
                     createMany: {
                         data: req.body.items.map((item: any) => ({ value: item, description: null })),
                     },
