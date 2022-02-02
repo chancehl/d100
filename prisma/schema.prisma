@@ -13,7 +13,9 @@ model User {
   name      String?
   email     String?      @unique
   lastLogin String?
-  saved     Collection[]
+  saved     Collection[] @relation("saved")
+  upvoted   Collection[] @relation("upvoted")
+  downvoted Collection[] @relation("downvoted")
 
   @@map(name: "users")
 }
@@ -24,6 +26,10 @@ model Collection {
   description String?
   owner       String
   items       CollectionItem[]
+  views       Int              @default(0)
+  savedBy     User[]           @relation("saved")
+  upvotedBy   User[]           @relation("upvoted")
+  downvotedBy User[]           @relation("downvoted")
 
   @@map(name: "collections")
 }
@@ -35,5 +41,6 @@ model CollectionItem {
 
   Collection   Collection? @relation(fields: [collectionId], references: [id])
   collectionId String?
+
   @@map(name: "collectionItems")
 }
