@@ -9,7 +9,7 @@ export const createCollection = async (req: NextApiRequest, res: NextApiResponse
         const generateId = (name: string) => {
             return name
                 .toLowerCase()
-                .replaceAll(' ', '_')
+                .replace(/s+/g, '')
                 .slice(0, 10)
                 .concat(
                     new Date()
