@@ -4,6 +4,7 @@ import DiscordProvider from 'next-auth/providers/discord'
 import prisma from '../../../prisma/client'
 
 export default NextAuth({
+    secret: process.env.SECRET,
     providers: [
         DiscordProvider({
             clientId: process.env.DISCORD_CLIENT_ID,
