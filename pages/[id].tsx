@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { getSession } from 'next-auth/react'
 import { GetServerSideProps } from 'next/types'
 import Router from 'next/router'
@@ -9,6 +9,7 @@ import { Collection, CollectionItem } from '@prisma/client'
 
 import prisma from '../prisma/client'
 import { Button } from '../components/button/button'
+import { RollContext } from '../context/roll-context'
 
 type CollectionPageProps = {
     collection: Collection & { items: CollectionItem[] }
@@ -18,6 +19,8 @@ type CollectionPageProps = {
 }
 
 export const CollectionPage = ({ collection, saved: savedFromServer, liked: likedFromServer, disliked: dislikedFromServer }: CollectionPageProps) => {
+    const { setRoll } = useContext(RollContext)
+
     const [saved, setSaved] = useState<boolean>(savedFromServer ?? false)
     const [liked, setLiked] = useState<boolean>(likedFromServer ?? false)
     const [disliked, setDisliked] = useState<boolean>(dislikedFromServer ?? false)
@@ -128,8 +131,9 @@ export const CollectionPage = ({ collection, saved: savedFromServer, liked: like
                     </li>
                 ))}
             </ul>
-            <div className="mt-16">
-                <Button text="Home" buttonType="secondary" onClick={() => Router.push('/')} />
+            <div className="mt-16 flex space-x-2">
+                <Button text="Home" buttonType="primary" onClick={() => Router.push('/')} />
+                <Button text="Roll" buttonType="secondary" onClick={() => setRoll!()} />
             </div>
         </div>
     )
