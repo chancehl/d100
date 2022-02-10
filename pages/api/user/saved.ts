@@ -14,7 +14,7 @@ export const toggleSave = async (req: NextApiRequest, res: NextApiResponse<Respo
             const id = parseQueryParam(req.query.collectionId)
 
             if (id == null) {
-                res.status(403).json({ error: 'Could not locate collectionId' })
+                res.status(400).json({ error: 'collectionId is required' })
 
                 return
             }
