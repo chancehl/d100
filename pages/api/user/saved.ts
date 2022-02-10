@@ -20,24 +20,22 @@ export const toggleSave = async (req: NextApiRequest, res: NextApiResponse<Respo
             }
 
             try {
-                const collection = await prisma.collection.findUnique({ where: { id } })
+                const collection = await prisma.collection.findUnique({ where: { id }, include: { savedBy: true } })
 
                 if (collection) {
-                    await prisma.user.update({
-                        where: {
-                            email: session.user.email,
-                        },
-                        data: {
-                            saved: {
-                                connect: {
-                                    id,
-                                },
-                            },
-                        },
-                    })
-                }
+                    const currentlySaved = collection.savedBy.find((user) => user.email === session.user?.email) != null
 
-                res.status(200).json({ collection })
+                    // prettier-ignore
+                    const connector = currentlySaved 
+                        ? { disconnect: { id } } 
+                        : { connect: { id } }
+
+                    await prisma.user.update({ where: { email: session.user.email }, data: { saved: { ...connector } } })
+
+                    res.status(200).json({ collection })
+                } else {
+                    res.status(404).json({ error: 'Collection not found' })
+                }
             } catch (error: any) {
                 res.status(500).json({ error: error.message })
             }
